@@ -1,7 +1,0 @@
-n_clusters: 4
-n_samples_per_cluster: 500
-dim: 10
-sigma: 1.0
-separation_factor: 6.0
-balanced: True
-isotropic: True
