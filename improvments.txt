@@ -1,0 +1,78 @@
+# Content and Styling Instructions for Report Improvement
+
+## Overview
+The current report (`report.pdf`) is a good starting point but lacks narrative flow and some key sections. Your task is to produce an improved version named `Anis_Medjdoul_report.pdf` using Typst. Focus on adding the missing content described below, integrating it seamlessly with the existing material. Keep all original tables, figures, and core results—they are fine. Do not change the structure of existing sections unless merging new content.
+
+---
+
+## New Sections to Add / Existing Sections to Enhance
+
+### 1. Introduction – Add a Motivation Paragraph
+Insert after the first paragraph of the current introduction:
+
+> In many real‑world applications, datasets are huge—think of customer data or image collections. Running traditional K‑Means on millions of rows can take hours or even crash your laptop. So we wanted to see if the ‘mini‑batch’ trick really works: does it save time without ruining the clusters? And does it behave differently for ‘hard’ clustering (K‑Means) vs. ‘soft’ clustering (Fuzzy C‑Means)? We picked two very different datasets to test this: one big and tabular, one high‑dimensional and image‑based.
+
+### 2. Add a "Hypotheses" Section
+Place this right after the Introduction, before “Theoretical Framework”. Use bullet points or short paragraphs:
+
+> Based on what we learned in class, we had a few guesses:
+> - Mini‑batch K‑Means would be way faster than full K‑Means, but might give slightly messier clusters (lower Silhouette score).
+> - For Fuzzy C‑Means, the full version is super slow because it updates a huge membership matrix. We thought mini‑batch FCM would be much faster, but maybe too noisy—or maybe the noise would actually help it avoid bad local minima.
+> - We also expected the high‑dimensional Fashion‑MNIST to be harder for any distance‑based method, so preprocessing with PCA would be crucial.
+
+### 3. Expand "Experimental Data and Preprocessing" – Add "Why These Datasets"
+In section 3, after the dataset descriptions, add a couple of sentences for each:
+
+> Covertype is huge (over half a million rows) – perfect for testing scalability. It also has a known number of classes (7), so we can evaluate how well the clusters match the real labels. Fashion‑MNIST, on the other hand, is not that big (70k) but has 784 dimensions – a classic ‘curse of dimensionality’ challenge. We wanted to see if mini‑batch methods handle that better.
+
+Also mention why we subsampled Covertype to 15k for the main evaluation: to run multiple trials (10 seeds) without waiting forever, while still being representative.
+
+### 4. Add a "Methodology" Section (after Parameter Selection)
+This section should consolidate all experimental details. Include:
+
+- **Hardware**: (Agent knows this) – e.g., “All experiments were run on a [CPU model, RAM, OS].” Use the actual specs.
+- **Software**: Python libraries used (scikit-learn, scikit-fuzzy, numpy, etc.) with versions. You can mention that you checked versions via `pip list` or `__version__`.
+- **Experimental setup**: Each algorithm run 10 times with different random seeds. Fixed k=7 for Covertype (based on elbow), k=10 for Fashion-MNIST. Batch size 1024 after testing (see Figure 3). Evaluation metrics: Silhouette, V-Measure, Adjusted Rand Index.
+- **Reproducibility**: Default parameters except where noted (e.g., fuzziness m=2 for FCM). All code is available (if applicable).
+
+### 5. Enhance Results Discussion (Section 5.2)
+For each bullet point in 5.2, add deeper interpretation:
+
+- **5.2.1 Speed-Precision Tradeoff**: Add explanation: On Covertype, standard K‑Means was not that much slower (0.65s vs 0.39s) because 15k samples isn't huge. On Fashion‑MNIST, the speed difference is dramatic (1.9s vs 0.52s) due to expensive 784‑d distance computations. Mini‑batch retains 98% of V‑Measure, confirming stochastic sampling captures global structure.
+- **5.2.2 Curious Case of Mini-Batch FCM**: Expand: Full FCM is extremely slow (14s) because it updates a 70k×10 membership matrix each iteration. Mini‑batch FCM runs in 0.36s and even achieves higher ARI (0.27 vs 0.19). This suggests the stochastic updates act as a regularizer, helping escape poor local minima.
+- **5.2.3 Statistical Robustness**: Add note: Lower standard deviation in mini‑batch runtimes (0.07s vs 0.41s for K‑Means) indicates more predictable execution, beneficial for real‑time or cloud environments.
+
+### 6. Add "Limitations and Future Work" Section (before Conclusion)
+Insert a new section:
+
+> One limitation is that we only tried one batch size (1024) for the main experiments. Maybe a smaller batch would be even faster, or a larger one might improve quality. We also didn’t tune the fuzziness parameter m in FCM – we just used m=2 because that’s common. Different m might change the comparison. Also, we only looked at Euclidean distance; other distance metrics might work better for image data. If we had more time, we’d test on even bigger datasets (like millions of rows) and see if the speedup holds.
+
+### 7. Revise Conclusion (Section 7)
+Keep the existing bullet points, but add a personal closing sentence:
+
+> Overall, this homework made me realize that ‘exact’ algorithms aren’t always better – sometimes a smart approximation (like mini‑batches) can be both faster and more robust. For big data, I’ll definitely use mini‑batch from now on.
+
+Also fix the duplicate “In conclusion” at the end (remove one).
+
+---
+
+## Styling Guidelines (Typst)
+
+- Use the same headings hierarchy as the original (1., 2., 2.1., etc.). Maintain consistent font and spacing.
+- Keep all tables and figures exactly as they appear (Table 1, Table 2, Figures 1–5). Ensure they are properly referenced in the text.
+- For the new sections, use the same formatting as surrounding text. For bullet points, use a clean bullet style.
+- The final PDF should be named `Anis_Medjdoul_report.pdf`.
+
+---
+
+## What to Keep and What to Drop
+- **Keep**: All existing tables, figures, theoretical framework, parameter selection, scalability analysis, and core results. They are good.
+- **Drop**: Nothing, just integrate the new content smoothly.
+- **Improve**: Flow between sections; check for typos (e.g., “high‑lights” on page 10).
+
+---
+
+## Final Check
+After adding the new content, read through the report to ensure it tells a coherent story: motivation → hypotheses → methods → results with interpretation → limitations → reflective conclusion. The tone should be that of a student – clear but not overly formal.
+
+Proceed with the modifications and generate the final PDF.

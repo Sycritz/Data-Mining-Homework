@@ -1,0 +1,7 @@
+n_clusters: 3
+n_samples_per_cluster: [600, 300, 100]
+dim: 2
+sigma: 1.0
+proportions: [0.6, 0.3, 0.1]
+balanced: False
+isotropic: False
